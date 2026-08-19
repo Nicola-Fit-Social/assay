@@ -4,7 +4,7 @@
 
 <br/>
 
-[![Paper](https://img.shields.io/badge/paper-v0.2.1_working_draft-7C561A?style=flat-square)](paper/Assay_Whitepaper_EN.pdf)
+[![Paper](https://img.shields.io/badge/paper-v0.2.2_working_draft-7C561A?style=flat-square)](paper/Assay_Whitepaper_EN.pdf)
 [![Timestamp](https://img.shields.io/badge/timestamp-Bitcoin_attested-A8792C?style=flat-square)](VERIFY.md)
 [![Reproducible](https://img.shields.io/badge/PoC-seed_20260818-2A78D6?style=flat-square)](poc/)
 [![Code](https://img.shields.io/badge/code-MIT-1BAF7A?style=flat-square)](LICENSE)
@@ -57,8 +57,8 @@ of the items — less content to author, protect, and eventually retire.
 <div align="center"><img src="assets/fig2_contamination.png" width="700"/></div>
 
 A model that memorises half the public test gains +3.9 rank positions under classical
-accuracy — and 0.0 under Assay's honeypot + fresh-probe defences (100% detection of
-heavy contamination, 0.8% false alarms).
+accuracy — and 0.0 under Assay's honeypot + fresh-probe defences (99.7% detection of
+heavy contamination — 598 of 600 replications — at 0.8% false alarms).
 </details>
 
 <details>
@@ -87,14 +87,15 @@ Every canonical PDF is identified by its SHA-256 digest and timestamped on the
 **Bitcoin blockchain** via [OpenTimestamps](https://opentimestamps.org):
 
 ```
-3d102a75bf35c9982dcf459431f6e95c71d9ad8f0559ee0a93c3a116a7ab21ef  Assay_Whitepaper_EN.pdf                (v0.2.1 — current)
-38dcf534194081c2efdb53b56ac0a7a4bf0fa528137997c6a65f90449f5603b2  archive/v0.2/Assay_Whitepaper_EN.pdf   (Bitcoin block 963143)
+78cb8dc1720fddde060e8bf531c0d5e1a1e1e0a053e468ff74a23575c930285b  Assay_Whitepaper_EN.pdf                  (v0.2.2 — current)
+3d102a75bf35c9982dcf459431f6e95c71d9ad8f0559ee0a93c3a116a7ab21ef  archive/v0.2.1/Assay_Whitepaper_EN.pdf
+38dcf534194081c2efdb53b56ac0a7a4bf0fa528137997c6a65f90449f5603b2  archive/v0.2/Assay_Whitepaper_EN.pdf     (Bitcoin block 963143)
 ```
 
-The v0.2.1 proof is freshly stamped; a scheduled workflow upgrades it automatically
-until it is Bitcoin-attested. The superseded v0.2 remains permanently attested in
-block **963143** under [`paper/archive/v0.2/`](paper/archive/v0.2/). Verify in ten
-seconds — drag a PDF and its `.ots` proof onto
+The current proof is freshly stamped; a scheduled workflow upgrades every proof in
+`paper/` automatically until Bitcoin-attested. Superseded versions keep their PDFs
+and proofs under [`paper/archive/`](paper/archive/) — v0.2 is permanently attested
+in block **963143**. Verify in ten seconds — drag a PDF and its `.ots` proof onto
 [opentimestamps.org](https://opentimestamps.org), or see [VERIFY.md](VERIFY.md) for
 the command-line route. Any copy whose digest differs from the values above is not
 authoritative.
@@ -138,8 +139,10 @@ What you are reproducing is **every number in the table above**: `exp_static.py`
 regenerates the efficiency, calibration and contamination results (experiments 1–2),
 `exp_arena.py` rebuilds the Bradley–Terry ranking from the 57,477 real LMArena votes
 and re-runs the manipulation red-team (experiment 3), and `robustness.py` repeats the
-whole battery under five independent seeds. Each run rewrites `poc/results_*.json` —
-diff your output against the committed copies to confirm the claims byte-for-byte.
+whole battery under five independent seeds. Outputs are written to `out/` at the repo
+root (created automatically; the arena corpus downloads itself on first run) — diff
+them against the committed reference copies in `poc/` to confirm the claims
+byte-for-byte.
 
 Per the paper's disclosure policy (§10), operational parameters of the production
 system — item content, decoy placement, flag thresholds — are withheld by design;
@@ -154,7 +157,7 @@ the reference implementation uses illustrative values.
   institution = {Intelligent System S.r.l.},
   year        = {2026},
   month       = {8},
-  note        = {Working Paper v0.2.1. SHA-256 3d102a75…ab21ef, Bitcoin-timestamped.}
+  note        = {Working Paper v0.2.2. SHA-256 78cb8dc1…30285b, Bitcoin-timestamped.}
 }
 ```
 

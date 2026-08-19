@@ -236,6 +236,8 @@ if __name__ == "__main__":
             "tau_cleanworld": summarize(res2["tau_cleanworld"]),
         },
     }
+    import os
+    os.makedirs("../out", exist_ok=True)
     with open("../out/results_static.json", "w") as fh:
         json.dump(out, fh, indent=1)
 

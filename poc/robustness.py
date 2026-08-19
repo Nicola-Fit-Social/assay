@@ -3,7 +3,11 @@ Verifica di robustezza: ripete i risultati chiave su 5 semi indipendenti e
 controlla che le conclusioni non dipendano dal seme.
 
 Conclusioni sotto test:
-  1. CAT-60 domina lo static-240 in accordo di rank (tau) -> guadagno >= 3x efficienza
+  1. CAT-60 eguaglia o supera lo static-240 valutato ad accuratezza classica
+     (lo status quo dei benchmark) -> efficienza ~4x. In ablazione si riporta
+     anche lo static-240 con statistica IRT-EAP: con 240 item ben calibrati e
+     la statistica giusta CAT-60 e' comparabile, non superiore — come
+     dichiarato nel paper (il guadagno e' l'efficienza, non la magia).
   2. Coverage degli intervalli CAT ~ 0.95 (calibrazione onesta)
   3. Correzione contaminazione: tau_corretto >> tau_statusquo, avvicina il mondo pulito
   4. Rilevamento a f=0.5 alto e FPR basso
@@ -21,12 +25,13 @@ def one_seed(seed):
     rng = np.random.default_rng(seed)
     bank = make_bank(600, rng)
     eap = EAPGrid(bank)
-    tau_static240, tau_cat60, cov60 = [], [], []
+    tau_acc240, tau_eap240, tau_cat60, cov60 = [], [], [], []
     for _ in range(R):
         items = rng.choice(bank.n, 240, replace=False)
         U = simulate_static(bank, THETA, items, rng)
+        tau_acc240.append(kendall_tau(THETA, U.mean(1)))   # status quo: accuratezza
         m, *_ = eap_from_static(eap, items, U)
-        tau_static240.append(kendall_tau(THETA, m))
+        tau_eap240.append(kendall_tau(THETA, m))           # ablazione: stessi item, IRT
         res = run_cat(bank, eap, THETA, [60], rng)
         m60, sd, lo, hi = res[60]
         tau_cat60.append(kendall_tau(THETA, m60))
@@ -69,22 +74,26 @@ def one_seed(seed):
         tc.append(kendall_tau(THETA, np.where(fl, mf, mp)))
         det50.append(np.mean([fl[mi] for mi, f in CONT.items() if f == 0.5]))
         fpr.append(np.mean(fl[clean_idx]))
-    return (np.mean(tau_static240), np.mean(tau_cat60), np.mean(cov60),
+    return (np.mean(tau_acc240), np.mean(tau_eap240), np.mean(tau_cat60), np.mean(cov60),
             np.mean(tq), np.mean(tc), np.mean(det50), np.mean(fpr))
 
 if __name__ == "__main__":
-    print("seed | tau_st240 tau_cat60 cov60 | tau_SQ tau_corr det50 FPR")
+    print("seed | tau_acc240 tau_eap240 tau_cat60 cov60 | tau_SQ tau_corr det50  FPR")
     rows = []
     for s in [1, 2, 3, 4, 5]:
         r = one_seed(1000 + s)
         rows.append(r)
-        print("%4d | %.3f     %.3f    %.3f | %.3f  %.3f   %.2f  %.3f" % (s, *r))
+        print("%4d | %.3f      %.3f      %.3f     %.3f | %.3f  %.3f   %.3f  %.3f" % (s, *r))
     rows = np.array(rows)
     print("\nMedia +/- sd su 5 semi:")
-    labels = ["tau_static240", "tau_cat60", "cov60", "tau_statusquo", "tau_corrected", "det@f=.5", "FPR"]
+    labels = ["tau_acc240 (status quo)", "tau_eap240 (ablazione)", "tau_cat60", "cov60",
+              "tau_statusquo", "tau_corrected", "det@f=.5", "FPR"]
     for i, lab in enumerate(labels):
-        print("  %-15s %.3f +/- %.3f" % (lab, rows[:, i].mean(), rows[:, i].std()))
-    print("\nCAT-60 batte static-240 in tutti i semi:", bool(np.all(rows[:,1] > rows[:,0])))
-    print("Correzione > status quo in tutti i semi:", bool(np.all(rows[:,4] > rows[:,3])))
-    print("Coverage in [0.93, 0.97] in tutti i semi:", bool(np.all((rows[:,2]>=0.93)&(rows[:,2]<=0.97))))
-    print("FPR < 2%% in tutti i semi:", bool(np.all(rows[:,6] < 0.02)))
+        print("  %-24s %.3f +/- %.3f" % (lab, rows[:, i].mean(), rows[:, i].std()))
+    print("\nCAT-60 >= static-240 ad accuratezza classica in tutti i semi:",
+          bool(np.all(rows[:, 2] >= rows[:, 0])))
+    print("Ablazione (non un claim): CAT-60 vs EAP-240 comparabili, delta medio %.3f"
+          % float(np.mean(rows[:, 2] - rows[:, 1])))
+    print("Correzione > status quo in tutti i semi:", bool(np.all(rows[:, 5] > rows[:, 4])))
+    print("Coverage in [0.93, 0.97] in tutti i semi:", bool(np.all((rows[:, 3] >= 0.93) & (rows[:, 3] <= 0.97))))
+    print("FPR < 2%% in tutti i semi:", bool(np.all(rows[:, 7] < 0.02)))

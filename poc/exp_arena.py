@@ -35,7 +35,22 @@ BOOT = 30
 
 
 def load_votes():
-    df = pd.read_parquet("../out/arena_votes.parquet")
+    """Carica il corpus dei voti; al primo run lo scarica dal dataset pubblico."""
+    import os
+    path = "../out/arena_votes.parquet"
+    if not os.path.exists(path):
+        os.makedirs("../out", exist_ok=True)
+        print("primo run: scarico lmsys/lmsys-arena-human-preference-55k (~10 MB)...")
+        import duckdb
+        con = duckdb.connect()
+        con.execute("INSTALL httpfs; LOAD httpfs;")
+        url = ("https://huggingface.co/api/datasets/"
+               "lmsys/lmsys-arena-human-preference-55k/parquet/default/train/0.parquet")
+        con.execute(
+            "COPY (SELECT id, model_a, model_b, winner_model_a, winner_model_b, winner_tie "
+            f"FROM read_parquet('{url}')) TO '{path}' (FORMAT PARQUET)")
+    df = pd.read_parquet(path)
+    assert len(df) == 57477, f"corpus inatteso: {len(df)} righe (attese 57477)"
     models = sorted(set(df.model_a) | set(df.model_b))
     m2i = {m: i for i, m in enumerate(models)}
     ia = df.model_a.map(m2i).to_numpy()
@@ -82,7 +97,10 @@ def interp_votes_for_gain(gains_mean, goal=2.0):
 
 def variant_shopping(rng):
     """Posizioni comprate pubblicando il migliore di N run (dati da exp1)."""
-    arr = np.load("../out/arrays_static.npz")
+    try:
+        arr = np.load("../out/arrays_static.npz")
+    except FileNotFoundError:
+        raise SystemExit("arrays_static.npz mancante: eseguire prima exp_static.py")
     acc = arr["acc240"]                     # (R, 20) re-run reali del simulatore
     R, M = acc.shape
     med = np.median(acc, axis=0)

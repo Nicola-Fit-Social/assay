@@ -73,6 +73,6 @@
 
   <!-- bitcoin-attested ribbon -->
   <g class="pill p3">
-    <text class="mono mut" x="216" y="292" font-size="11">SHA-256 anchored on Bitcoin via OpenTimestamps · working paper v0.2.1 · 2026</text>
+    <text class="mono mut" x="216" y="292" font-size="11">SHA-256 anchored on Bitcoin via OpenTimestamps · working paper v0.2.2 · 2026</text>
   </g>
 </svg>
