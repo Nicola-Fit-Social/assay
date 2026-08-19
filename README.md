@@ -99,6 +99,23 @@ seconds — drag a PDF and its `.ots` proof onto
 the command-line route. Any copy whose digest differs from the values above is not
 authoritative.
 
+## 🔒 Private by architecture
+
+The measurement engine is **local-first**. Everything that touches your data —
+item administration, ability estimation, calibration, the full statistical
+pipeline — runs on infrastructure you control. The only network traffic is the
+calls *you* configure to the model endpoints under test, with your own API keys;
+with locally hosted weights the evaluation runs fully **air-gapped**. No
+telemetry, no account, no cloud dependency: prompts, responses and scores never
+leave your machine.
+
+Verifiability does not require disclosure. A private run can still be anchored
+exactly as this repository anchors the paper: commit the SHA-256 of your
+artefacts, and the only thing that ever leaves your infrastructure is a
+**32-byte digest — and only if you choose to publish it**. The harness is
+MIT-licensed and small enough to audit line by line: the privacy claim is
+checkable, not promissory.
+
 ## Repository layout
 
 ```
