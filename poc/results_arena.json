@@ -1,0 +1,155 @@
+{
+ "data_source": "lmsys/lmsys-arena-human-preference-55k (voti reali LMArena 2023-24)",
+ "n_votes": 57477,
+ "n_models": 64,
+ "target": {
+  "name": "gpt-3.5-turbo-1106",
+  "rank": 30,
+  "elo": 1023.5527989734376,
+  "battles": 3352,
+  "boot_elo_sd": 6.197004472962568,
+  "boot_rank_range": [
+   24,
+   35
+  ]
+ },
+ "top10": [
+  {
+   "rank": 1,
+   "model": "gpt-4-1106-preview",
+   "elo": 1211.2
+  },
+  {
+   "rank": 2,
+   "model": "gpt-4-0125-preview",
+   "elo": 1210.4
+  },
+  {
+   "rank": 3,
+   "model": "gpt-4-0314",
+   "elo": 1139.0
+  },
+  {
+   "rank": 4,
+   "model": "gpt-4-0613",
+   "elo": 1120.4
+  },
+  {
+   "rank": 5,
+   "model": "qwen1.5-72b-chat",
+   "elo": 1108.4
+  },
+  {
+   "rank": 6,
+   "model": "mistral-medium",
+   "elo": 1106.1
+  },
+  {
+   "rank": 7,
+   "model": "claude-1",
+   "elo": 1098.6
+  },
+  {
+   "rank": 8,
+   "model": "claude-2.0",
+   "elo": 1083.8
+  },
+  {
+   "rank": 9,
+   "model": "gemini-pro-dev-api",
+   "elo": 1077.0
+  },
+  {
+   "rank": 10,
+   "model": "gemini-pro",
+   "elo": 1074.2
+  }
+ ],
+ "sweep": [
+  125,
+  250,
+  500,
+  1000,
+  2000,
+  4000
+ ],
+ "gain_free_mean": [
+  6.0,
+  7.0,
+  21.0,
+  26.0,
+  27.0,
+  29.0
+ ],
+ "gain_free_sd": [
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  0.0
+ ],
+ "gain_def_mean": [
+  2.0,
+  5.0,
+  6.0,
+  9.0,
+  22.0,
+  26.0
+ ],
+ "gain_def_sd": [
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  0.0
+ ],
+ "elo_gain_free_mean": [
+  15.242284707675557,
+  29.269439200759848,
+  54.39679520178371,
+  95.69003408046217,
+  157.44701922058871,
+  238.62456074199198
+ ],
+ "elo_gain_def_mean": [
+  4.71336308657169,
+  9.303688603950036,
+  18.152327729066467,
+  34.5303793138963,
+  63.477949134182005,
+  109.92764858066892
+ ],
+ "votes_for_2pos_free": 41.666666666666664,
+ "votes_for_2pos_free_pct": 0.07,
+ "votes_for_2pos_defended": 125.0,
+ "cost_2pos_defended_eur": 75.0,
+ "ci95_halfwidth_elo": 12.146128767006633,
+ "votes_beyond_ci_free": 205.64690553240462,
+ "votes_beyond_ci_defended": 687.4438413246271,
+ "cost_beyond_ci_defended_eur": 414.0,
+ "defense_assumptions": {
+  "weight": 0.3,
+  "cap_per_identity": 5,
+  "cost_per_identity_eur": 3.0
+ },
+ "variant_shopping": {
+  "1": {
+   "mean_pos": -0.007666666666666666,
+   "sd": 0.8146213162500039
+  },
+  "5": {
+   "mean_pos": 0.803,
+   "sd": 0.7430955524022467
+  },
+  "10": {
+   "mean_pos": 1.1913333333333334,
+   "sd": 0.7090309505860015
+  },
+  "20": {
+   "mean_pos": 1.529,
+   "sd": 0.6125022448938452
+  }
+ }
+}

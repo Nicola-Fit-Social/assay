@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "Assay: A Protocol for Verifiable AI Model Evaluation"
+authors:
+  - family-names: Finazzi
+    given-names: Nicola
+    affiliation: "Intelligent System S.r.l."
+version: "0.2"
+date-released: "2026-08-19"
+license: CC-BY-NC-ND-4.0
+type: report
+abstract: >-
+  A three-layer protocol for trustworthy AI benchmarking: adaptive psychometric
+  measurement (3PL IRT, Bayesian estimation, computerised adaptive testing,
+  honeypot contamination detection), a pre-registration and commit-reveal
+  protocol layer, and a public tamper-evident ledger. Includes a proof of
+  concept with a manipulation red-team on 57,477 real arena votes.
