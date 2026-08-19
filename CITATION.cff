@@ -5,7 +5,7 @@ authors:
   - family-names: Finazzi
     given-names: Nicola
     affiliation: "Intelligent System S.r.l."
-version: "0.2"
+version: "0.2.1"
 date-released: "2026-08-19"
 license: CC-BY-NC-ND-4.0
 type: report

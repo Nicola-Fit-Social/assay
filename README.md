@@ -4,7 +4,7 @@
 
 <br/>
 
-[![Paper](https://img.shields.io/badge/paper-v0.2_working_draft-7C561A?style=flat-square)](paper/Assay_Whitepaper_EN.pdf)
+[![Paper](https://img.shields.io/badge/paper-v0.2.1_working_draft-7C561A?style=flat-square)](paper/Assay_Whitepaper_EN.pdf)
 [![Timestamp](https://img.shields.io/badge/timestamp-Bitcoin_attested-A8792C?style=flat-square)](VERIFY.md)
 [![Reproducible](https://img.shields.io/badge/PoC-seed_20260818-2A78D6?style=flat-square)](poc/)
 [![Code](https://img.shields.io/badge/code-MIT-1BAF7A?style=flat-square)](LICENSE)
@@ -39,7 +39,7 @@ master seed `20260818`) — the manipulation red-team runs on **57,477 real LMAr
 | Statistical efficiency | 240-item static test | same ranking fidelity with **~60 adaptive items** (τ = 0.948 vs 0.936) |
 | Calibration honesty | no intervals published | **94–95%** empirical coverage of the declared 95% interval |
 | Contamination resistance | **+3.9 ranks** from memorising half the test | **0.0 ranks** after honeypot detection + fresh re-test |
-| Manipulation cost | ~41 anonymous votes ≈ €0 for +2 ranks | ≈ **€414** and ~687 verified identities to beat the uncertainty band |
+| Manipulation cost | ~41 anonymous votes ≈ €0 for +2 ranks | ~687 trust-weighted votes from **~138 verified identities** (≈ €414 floor at PoC scale) to beat the uncertainty band |
 | Verifiability | self-reported scores | **100%** of scores re-derivable from committed artefacts |
 
 <details>
@@ -68,24 +68,36 @@ heavy contamination, 0.8% false alarms).
 
 On the public LMArena corpus, ~41 anonymous votes move a mid-table model two ranks at
 zero cost. Under identity-bound, weighted voting with confidence-band rankings, beating
-the declared uncertainty band costs ≈ €414 across ~687 verified identities — and leaves
-a permanent trace.
+the declared uncertainty band takes ~687 trust-weighted votes cast from ~138 distinct
+verified identities (≈ €414 at the declared €3-per-identity assumption) — and leaves a
+permanent trace.
+
+**Read €414 as a floor, not a ceiling.** It is measured at snapshot scale (57k votes)
+with the cheapest verification tier; the cost grows multiplicatively with corpus volume
+and verification strength, the real scarce resource — distinct verified identities —
+cannot be bought at scale without documented identity fraud, and the production schedule
+of caps, weights and tiers is withheld (§10) so it cannot be budgeted against. The
+qualitative change is the point: a free, anonymous, invisible attack becomes priced,
+identity-bound and permanently attributable.
 </details>
 
 ## 🔏 The blockchain signature
 
-The canonical PDF is identified by its SHA-256 digest and timestamped on the
-**Bitcoin blockchain** via [OpenTimestamps](https://opentimestamps.org)
-(attested in block **963143**):
+Every canonical PDF is identified by its SHA-256 digest and timestamped on the
+**Bitcoin blockchain** via [OpenTimestamps](https://opentimestamps.org):
 
 ```
-38dcf534194081c2efdb53b56ac0a7a4bf0fa528137997c6a65f90449f5603b2  Assay_Whitepaper_EN.pdf
+3d102a75bf35c9982dcf459431f6e95c71d9ad8f0559ee0a93c3a116a7ab21ef  Assay_Whitepaper_EN.pdf                (v0.2.1 — current)
+38dcf534194081c2efdb53b56ac0a7a4bf0fa528137997c6a65f90449f5603b2  archive/v0.2/Assay_Whitepaper_EN.pdf   (Bitcoin block 963143)
 ```
 
-Verify in ten seconds — drag `paper/Assay_Whitepaper_EN.pdf` and its `.ots` proof
-onto [opentimestamps.org](https://opentimestamps.org), or see [VERIFY.md](VERIFY.md)
-for the command-line route. A scheduled workflow keeps the proof upgraded automatically.
-Any copy whose digest differs from the value above is not authoritative.
+The v0.2.1 proof is freshly stamped; a scheduled workflow upgrades it automatically
+until it is Bitcoin-attested. The superseded v0.2 remains permanently attested in
+block **963143** under [`paper/archive/v0.2/`](paper/archive/v0.2/). Verify in ten
+seconds — drag a PDF and its `.ots` proof onto
+[opentimestamps.org](https://opentimestamps.org), or see [VERIFY.md](VERIFY.md) for
+the command-line route. Any copy whose digest differs from the values above is not
+authoritative.
 
 ## Repository layout
 
@@ -105,6 +117,13 @@ python3 exp_arena.py      # experiment 3 (needs duckdb + network for the vote co
 python3 robustness.py     # five-seed checks
 ```
 
+What you are reproducing is **every number in the table above**: `exp_static.py`
+regenerates the efficiency, calibration and contamination results (experiments 1–2),
+`exp_arena.py` rebuilds the Bradley–Terry ranking from the 57,477 real LMArena votes
+and re-runs the manipulation red-team (experiment 3), and `robustness.py` repeats the
+whole battery under five independent seeds. Each run rewrites `poc/results_*.json` —
+diff your output against the committed copies to confirm the claims byte-for-byte.
+
 Per the paper's disclosure policy (§10), operational parameters of the production
 system — item content, decoy placement, flag thresholds — are withheld by design;
 the reference implementation uses illustrative values.
@@ -118,7 +137,7 @@ the reference implementation uses illustrative values.
   institution = {Intelligent System S.r.l.},
   year        = {2026},
   month       = {8},
-  note        = {Working Paper v0.2. SHA-256 38dcf534…5603b2, Bitcoin-timestamped.}
+  note        = {Working Paper v0.2.1. SHA-256 3d102a75…ab21ef, Bitcoin-timestamped.}
 }
 ```
 
